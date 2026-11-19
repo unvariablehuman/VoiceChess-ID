@@ -1,0 +1,6 @@
+starlette>=0.37
+uvicorn>=0.29
+python-multipart>=0.0.9
+faster-whisper>=1.0
+python-chess>=1.10
+numpy

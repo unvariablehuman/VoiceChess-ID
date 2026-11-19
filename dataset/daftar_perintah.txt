@@ -1,0 +1,155 @@
+DAFTAR PERINTAH - VoiceChess-ID
+================================
+Petunjuk merekam:
+1. Pakai aplikasi perekam bawaan HP (hindari voice note WhatsApp karena dikompres).
+2. Cari tempat yang cukup tenang, HP sekitar 20-30 cm dari mulut.
+3. Baca perintah dari atas ke bawah, SATU PER SATU, dengan jeda diam 2 detik di antara perintah.
+4. Ucapkan seperti biasa kamu bicara (mis. "E2" boleh dibaca "e dua"). Jangan dibuat-buat.
+5. Kalau salah ucap, diam sebentar lalu ulangi perintah yang sama dari awal. Beri tahu nomor yang diulang.
+6. Boleh dipecah jadi beberapa file rekaman, mis. 30 perintah per file.
+7. Kirim file sebagai dokumen/file asli (bukan sebagai voice note).
+
+Nomor 1-40  : DIREKAM ULANG juga di tempat berisik (kondisi bising), lihat penanda.
+Nomor 119+  : perintah tambahan (tanpa petak asal, promosi, makan, variasi kalimat).
+Total: 134 perintah (118 utama + 16 tambahan)
+
+  1. Pion dari B6 menuju B7
+  2. Pindahkan kuda dari F3 ke E3
+  3. Benteng B1 ke A2
+  4. Kuda H7 makan D2
+  5. Pindahkan gajah dari A4 ke E2
+  6. Pindahkan gajah dari G8 ke A2
+  7. Batal
+  8. Raja dari C1 menuju F8
+  9. Benteng F5 ke D4
+ 10. Rokade panjang
+ 11. Pindahkan menteri dari E1 ke G1
+ 12. Jalankan pion dari B3 ke B4
+ 13. Gajah dari A7 menuju F2
+ 14. Pindahkan pion dari D3 ke D4
+ 15. Menteri G2 ke G4
+ 16. Pindahkan benteng dari A4 ke A6
+ 17. Kuda dari H7 menuju A2
+ 18. Menteri dari A2 menuju C2
+ 19. Ya
+ 20. Rokade pendek
+ 21. Jalankan raja dari D1 ke D2
+ 22. Jalankan benteng dari E3 ke E1
+ 23. Raja D5 ke G3
+ 24. Pindahkan benteng dari A4 ke G6
+ 25. Pindahkan pion dari E2 ke E3
+ 26. Benteng D5 makan G7
+ 27. Raja dari A8 menuju B2
+ 28. Ulangi
+ 29. Gajah C4 makan C8
+ 30. Pindahkan menteri dari A1 ke H3
+    --- (akhir blok 30, boleh berhenti rekam / lanjut file baru) ---
+ 31. Benteng dari E2 menuju E6
+ 32. Jalankan kuda dari D3 ke H4
+ 33. Geser menteri F6 ke B5
+ 34. Benteng dari G5 menuju B4
+ 35. Pindahkan kuda dari D1 ke B1
+ 36. Tidak
+ 37. Kuda dari E3 menuju D6
+ 38. Jalankan pion dari E6 ke E8
+ 39. Pindahkan kuda dari A3 ke G6
+ 40. Geser menteri B4 ke G2
+    --- akhir blok 1-40 (blok ini juga direkam di kondisi BISING) ---
+ 41. Raja B8 makan B3
+ 42. Geser raja D5 ke C6
+ 43. Menteri E7 makan C8
+ 44. Geser raja A2 ke F5
+ 45. Geser pion D4 ke D5
+ 46. Gajah dari D2 menuju G5
+ 47. Jalankan gajah dari C2 ke G1
+ 48. Kuda G4 ke H5
+ 49. Rokade panjang
+ 50. Rokade pendek
+ 51. Geser benteng C7 ke A7
+ 52. Geser gajah F7 ke D5
+ 53. Tidak
+ 54. Geser gajah H6 ke C6
+ 55. Raja C8 makan E1
+ 56. Pindahkan raja dari E8 ke F2
+ 57. Ya
+ 58. Kuda dari D2 menuju A6
+ 59. Geser kuda B4 ke E8
+ 60. Gajah E6 ke D2
+    --- (akhir blok 30, boleh berhenti rekam / lanjut file baru) ---
+ 61. Rokade pendek
+ 62. Jalankan pion dari H6 ke H8
+ 63. Gajah D4 ke B6
+ 64. Ya
+ 65. Jalankan benteng dari E8 ke E7
+ 66. Geser kuda B2 ke G2
+ 67. Geser kuda B3 ke A6
+ 68. Pindahkan raja dari E4 ke C6
+ 69. Pion A6 makan A7
+ 70. Geser pion G2 ke G3
+ 71. Benteng G5 ke D6
+ 72. Pindahkan menteri dari B1 ke B3
+ 73. Jalankan menteri dari B5 ke F2
+ 74. Ulangi
+ 75. Raja A5 ke C2
+ 76. Kuda H2 makan G2
+ 77. Kuda B6 ke A4
+ 78. Jalankan kuda dari C7 ke C1
+ 79. Geser benteng G6 ke A2
+ 80. Jalankan kuda dari F6 ke E1
+ 81. Geser benteng F4 ke H7
+ 82. Menteri D1 ke A6
+ 83. Menteri F5 makan D6
+ 84. Geser menteri G8 ke E1
+ 85. Rokade panjang
+ 86. Benteng dari H4 menuju G1
+ 87. Benteng H3 makan D5
+ 88. Batal
+ 89. Kuda E6 makan A6
+ 90. Pion E2 makan E3
+    --- (akhir blok 30, boleh berhenti rekam / lanjut file baru) ---
+ 91. Pion dari C4 menuju C6
+ 92. Pindahkan benteng dari D3 ke G8
+ 93. Menteri dari C7 menuju B7
+ 94. Pion C5 ke C6
+ 95. Menteri dari D6 menuju G2
+ 96. Pion B2 ke B4
+ 97. Tidak
+ 98. Batal
+ 99. Pion dari D6 menuju D7
+100. Pion E2 ke E3
+101. Kuda G5 ke A1
+102. Jalankan benteng dari H3 ke E3
+103. Benteng B7 makan F6
+104. Gajah dari C7 menuju A3
+105. Gajah B7 ke F7
+106. Ulangi
+107. Gajah H4 makan B8
+108. Menteri F4 ke C8
+109. Jalankan gajah dari F4 ke E2
+110. Jalankan raja dari B4 ke F5
+111. Pindahkan pion dari E6 ke E8
+112. Gajah H4 makan D8
+113. Geser gajah D4 ke D8
+114. Pion B3 makan B4
+115. Jalankan gajah dari C7 ke C5
+116. Pindahkan gajah dari G3 ke D3
+117. Geser pion E5 ke E7
+118. Jalankan menteri dari D1 ke B7
+
+=== PERINTAH TAMBAHAN (119 dst.) ===
+119. Kuda ke F3
+120. Pion ke E4
+121. Gajah ke C4
+122. Benteng ke D1
+123. Menteri ke H5
+124. Raja ke G1
+125. Pion E7 ke E8 jadi menteri
+126. Pion A7 ke A8 menjadi benteng
+127. Pion H2 ke H1 promosi kuda
+128. Pion B7 ke B8 jadi gajah
+129. Pion D4 makan E5
+130. Menteri D1 ambil H5
+131. Gajah C4 tangkap F7
+132. Langkah pion E2 ke E4
+133. Tolong pindahkan kuda G1 ke F3
+134. Majukan pion D2 ke D4

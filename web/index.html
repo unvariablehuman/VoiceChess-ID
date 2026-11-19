@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VoiceChess-ID</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%99%9E%3C/text%3E%3C/svg%3E">
+  <script>
+    // Pasang tema sebelum halaman tergambar (tanpa kedip): pilihan tersimpan, kalau tidak ada ikut sistem.
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem("vc_theme"); } catch (e) { /* mode privat */ }
+      if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <link rel="stylesheet" href="style.css?v=20261120b">
+</head>
+<body class="landing-open">
+  <!-- ==================== LANDING (hilang saat "Mulai Bermain") ==================== -->
+  <section class="landing" id="landing" aria-label="Selamat datang">
+    <div class="lp-floor" aria-hidden="true"></div>
+    <header class="top lp-top">
+      <div class="top-right">
+        <div class="pill" id="lpPill"><span class="led"></span><span id="lpText">Menghubungkan...</span></div>
+        <button class="theme-btn" aria-label="Ganti ke mode terang" title="Ganti tema"><svg class="i ic-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg><svg class="i ic-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></button>
+      </div>
+    </header>
+    <div class="lp-main">
+      <div class="lp-knight" aria-hidden="true">♞</div>
+      <h1 class="lp-title">Voice<span>Chess-ID</span></h1>
+      <p class="lp-sub">Ucapkan langkahmu dalam Bahasa Indonesia, bidaknya yang berpindah.</p>
+      <button class="lp-play" id="playBtn" autofocus><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>Mulai Bermain</button>
+    </div>
+  </section>
+
+  <header class="top app-part" inert>
+    <a class="brand" id="homeLink" href="./" title="Kembali ke halaman awal" aria-label="VoiceChess-ID, kembali ke halaman awal">
+      <span class="logo" aria-hidden="true">♞</span>
+      <svg class="i wave" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/></svg>
+      <div>
+        <div class="title">Voice<span>Chess-ID</span></div>
+        <div class="subtitle">Main catur dengan suara, dalam Bahasa Indonesia</div>
+      </div>
+    </a>
+    <div class="top-right">
+      <div class="pill" id="serverPill"><span class="led"></span><span id="serverText">Menghubungkan...</span></div>
+      <button class="theme-btn" id="themeBtn" aria-label="Ganti ke mode terang" title="Ganti tema"><svg class="i ic-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg><svg class="i ic-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></button>
+    </div>
+  </header>
+
+  <main class="layout app-part" inert>
+    <!-- ======================= PAPAN ======================= -->
+    <section class="card game">
+      <div class="card-head">
+        <span class="head-title"><svg class="i ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></svg> Permainan Catur</span>
+        <span class="turn-pill"><span class="turn-dot" id="turnDot"></span><span id="turnText">Giliran Putih</span></span>
+      </div>
+      <div class="board-wrap">
+        <div class="ranks" id="ranks"></div>
+        <div id="board" class="board" aria-label="Papan catur"></div>
+        <span></span>
+        <div class="files" id="files"></div>
+      </div>
+    </section>
+
+    <!-- ======================= SUARA ======================= -->
+    <section class="side">
+      <div class="card voice" id="voiceCard">
+        <div class="card-head">
+          <span class="head-title"><svg class="i ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg> Voice Assistant</span>
+          <span class="badge" id="micBadge">Mati</span>
+        </div>
+        <button class="orb" id="orbBtn" aria-label="Nyalakan atau matikan mikrofon">
+          <span class="ring r1"></span><span class="ring r2"></span>
+          <svg class="ic-mic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg>
+          <svg class="ic-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/></svg>
+        </button>
+        <div class="voice-status" id="micStatus">Mikrofon mati</div>
+        <div class="voice-hint" id="micHint">Tekan "Mulai Bicara", lalu ucapkan mis. "Pion E2 ke E4"</div>
+        <div class="handoff" id="handoff" role="status" hidden>
+          <span class="handoff-text"><b id="handoffTurn">Giliran Hitam</b><span>tekan Siap atau Spasi</span></span>
+          <button class="ready-btn" id="readyBtn">Hitam Siap</button>
+        </div>
+        <button class="talk" id="micBtn"><svg class="i bars" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/></svg><span id="micBtnText">Mulai Bicara</span></button>
+        <form id="typeForm" class="type-row" autocomplete="off">
+          <input id="typeInput" maxlength="80" placeholder="atau ketik perintah lalu Enter…">
+        </form>
+        <div class="opts">
+          <label class="switch"><input type="checkbox" id="twoPlayer"><span class="slider" aria-hidden="true"></span>Mode 2 Pemain</label>
+          <label class="chk" id="autoFlipWrap"><input type="checkbox" id="autoFlip" disabled>Balik papan otomatis tiap giliran</label>
+        </div>
+      </div>
+
+      <div class="card row-card">
+        <svg class="i row-ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="14" x="3" y="5" rx="2" ry="2"/><path d="M7 15h4M15 15h2M7 11h2M13 11h4"/></svg>
+        <div class="row-body">
+          <div class="row-label">Transkripsi</div>
+          <div class="field" id="transcript">-</div>
+        </div>
+      </div>
+
+      <div class="card row-card">
+        <svg class="i row-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/></svg>
+        <div class="row-body">
+          <div class="row-label">Hasil Parsing</div>
+          <div class="field parse">
+            <span id="parseMove">-</span>
+            <span class="verdict" id="parseVerdict" hidden></span>
+          </div>
+          <div class="sysmsg" id="message">-</div>
+          <div class="confirm" id="confirmRow" hidden>
+            <button class="yes" id="yesBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Ya</button>
+            <button class="no" id="noBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Tidak</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="histBtn"><svg class="i aic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>Riwayat</button>
+        <button id="flipBtn"><svg class="i aic" viewBox="0 0 24 24" aria-hidden="true"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>Balik Papan</button>
+        <button id="newBtn"><svg class="i aic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Papan Baru</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bottom app-part" inert>
+    <div class="bot-item"><span class="muted"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" x2="9" y1="14" y2="18"/><line x1="7" x2="4" y1="17" y2="20"/><line x1="3" x2="5" y1="19" y2="21"/></svg>Bidak yang dimakan:</span> <span class="captured" id="captured">-</span></div>
+    <div class="bot-item"><span class="muted"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>Langkah terakhir:</span> <span class="chip" id="lastChip">-</span></div>
+    <div class="bot-item tag"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/></svg><em>Faster-Whisper + parser Bahasa Indonesia</em></div>
+  </footer>
+
+  <dialog id="histDialog">
+    <div class="dlg-head"><b>Riwayat langkah</b><button id="histClose" aria-label="Tutup"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+    <ol id="history" class="history"></ol>
+  </dialog>
+
+  <script src="config.js"></script>
+  <script src="audio.js"></script>
+  <script src="app.js?v=20261120b"></script>
+</body>
+</html>

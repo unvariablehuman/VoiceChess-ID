@@ -1,0 +1,50 @@
+# ---------------------------------------------------------------
+# Privasi: rekaman suara, hasil evaluasi per speaker, dokumen tugas
+# ---------------------------------------------------------------
+dataset/rekaman_lokal/
+evaluasi/hasil/
+logs/
+dokumen/
+
+# semua file audio di mana pun
+*.wav
+*.m4a
+*.mp3
+*.ogg
+*.opus
+*.webm
+*.flac
+# arsip zip (biasanya berisi rekaman)
+*.zip
+
+# ---------------------------------------------------------------
+# Python / Jupyter / sistem operasi
+# ---------------------------------------------------------------
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+.cache/
+.DS_Store
+Thumbs.db
+
+# ---------------------------------------------------------------
+# Rahasia
+# ---------------------------------------------------------------
+.env
+.env.*
+*.key
+*token*
+
+# ---------------------------------------------------------------
+# File model
+# ---------------------------------------------------------------
+*.bin
+*.pt
+*.onnx
+*.safetensors
+
+# Salinan cetak daftar_perintah.txt (metadata berisi nama penulis)
+dataset/perintah suara.pdf
