@@ -71,6 +71,25 @@ dijalankan, model Whisper (`small`) diunduh otomatis; tunggu sampai status menun
 Alamat server ASR bisa diganti di `web/config.js`. Variabel lingkungan server yang
 tersedia: `WHISPER_MODEL`, `WHISPER_DEVICE`, `WHISPER_COMPUTE`, `ALLOWED_ORIGINS`, `PORT`.
 
+### Demo online (Vercel + server di laptop)
+
+Halaman web di Vercel bisa memakai server ASR yang berjalan di laptop, dibuka ke
+internet lewat [Cloudflare Quick Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/)
+(pasang sekali: `winget install --id Cloudflare.cloudflared`).
+
+1. Nyalakan server ASR: `python server/server.py`
+2. Di terminal lain, buka tunnel: `cloudflared tunnel --url http://localhost:7860`
+   lalu salin alamat `https://....trycloudflare.com` dari output-nya.
+3. Buka `https://<web-vercel>/?api=<alamat trycloudflare>`.
+   Alamat itu diingat di browser tersebut; `?api=reset` mengembalikan ke default (localhost).
+
+Catatan:
+
+- Laptop (server dan tunnel) harus tetap menyala selama demo.
+- Alamat tunnel berganti setiap kali `cloudflared` dijalankan, jadi link `?api=` perlu diperbarui.
+- Kalau perintah `cloudflared` belum dikenali setelah instalasi, tutup lalu buka lagi terminalnya.
+- Demi keamanan, `?api=` hanya menerima `localhost` dan alamat `*.trycloudflare.com`.
+
 ## Catatan
 
 - **Rekaman suara dan dataset tidak disertakan** di repositori ini karena alasan privasi.

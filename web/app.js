@@ -260,6 +260,7 @@
     $("micBtnText").textContent = "Mulai Bicara";
     $("micBtn").classList.remove("on");
     micState("off");
+    if (liveText) endLive();
   }
 
   function showLive(t) { liveText = true; $("transcript").textContent = t; $("transcript").classList.add("live"); }
