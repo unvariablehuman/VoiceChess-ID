@@ -55,14 +55,38 @@
     $("lpPill").className = cls; $("lpText").textContent = label;   // status yang sama di landing
   }
 
+  // Server di Azure bisa "tidur"; cold start butuh 1-2 menit. Selama itu jangan langsung "Offline".
+  const OPENED_AT = Date.now();
+  const WAKE_MS = 2 * 60 * 1000;
+  function setUnreachable(err) {
+    const waking = Date.now() - OPENED_AT < WAKE_MS;
+    if (waking) setServer("wait", "Menghubungkan... (server sedang bangun, bisa 1-2 menit)");
+    else setServer("off");
+    if (state === null)   // papan belum termuat: kotak pesan ikut status
+      $("message").textContent = waking ? "Menunggu server bangun... papan akan muncul sendiri."
+                                        : "Tidak bisa menghubungi server: " + err.message;
+  }
+
+  let loadingState = false;
+  function loadState() {
+    if (loadingState) return;
+    loadingState = true;
+    post("/api/state").then((st) => { prevHistLen = st.history.length; apply(st, "load"); })
+      .catch((e) => setUnreachable(e))
+      .finally(() => { loadingState = false; });
+  }
+
   async function checkHealth() {
     try {
       const h = await (await fetch(API + "/health")).json();
       if (h.model_error) { setServer("off", "Model gagal dimuat"); return; }
-      if (h.model_ready) { setServer("on", `Server Online · Whisper ${h.model}`); }
+      if (h.model_ready) {
+        setServer("on", `Server Online · Whisper ${h.model}`);
+        if (state === null) loadState();   // server baru bangun: papan belum termuat
+      }
       else { setServer("wait", `Memuat Whisper ${h.model}...`); setTimeout(checkHealth, 3000); }
     } catch (e) {
-      setServer("off");
+      setUnreachable(e);
       setTimeout(checkHealth, 5000);
     }
   }
@@ -444,6 +468,5 @@
   });
 
   checkHealth();
-  post("/api/state").then((st) => { prevHistLen = st.history.length; apply(st, "load"); })
-    .catch((e) => { $("message").textContent = "Tidak bisa menghubungi server: " + e.message; setServer("off"); });
+  loadState();
 })();
