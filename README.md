@@ -73,6 +73,8 @@ tersedia: `WHISPER_MODEL`, `WHISPER_DEVICE`, `WHISPER_COMPUTE`, `ALLOWED_ORIGINS
 
 ### Demo online (Vercel + server di laptop)
 
+Web di https://voicechess-id-web.vercel.app secara default memakai server ASR di Azure Container Apps (region East Asia); cara Cloudflare Tunnel di bawah tetap bisa dipakai lewat `?api=`.
+
 Halaman web di Vercel bisa memakai server ASR yang berjalan di laptop, dibuka ke
 internet lewat [Cloudflare Quick Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/)
 (pasang sekali: `winget install --id Cloudflare.cloudflared`).
