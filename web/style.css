@@ -194,24 +194,48 @@ button, input { -webkit-tap-highlight-color: transparent; touch-action: manipula
    .layout jadi size-container, papan diukur dari sisa tinggi/lebar (cqh/cqw). */
 @media (min-width: 1025px) and (min-height: 521px) {
   body { height: 100vh; height: 100dvh; min-height: 0; overflow: hidden; }
-  .layout { container-type: size; min-height: 0; overflow: hidden; }
-  /* tinggi kartu = size + ~82px (padding, judul, label file); lebar = size + ~460px (label rank, padding, gap, panel 390) */
-  .board-wrap { --size: min(100cqh - 86px, 100cqw - 470px, 760px); }
-  .side { max-height: 100cqh; overflow-y: auto; scrollbar-width: thin; }
+  .layout { container-type: size; min-height: 0; overflow: hidden; align-items: stretch; }
+  /* tinggi kartu = size + ~90px (padding, judul, label file); lebar = size + ~460px (label rank, padding, gap, panel 390) */
+  .board-wrap { --size: min(100cqh - 92px, 100cqw - 470px, 760px); margin-block: auto; }
+  /* papan & panel kanan sama tinggi = satu layar penuh; kartu suara mengisi sisa ruang */
+  .game { display: flex; flex-direction: column; }
+  .side { height: 100cqh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--edge) transparent; }
+  .voice { flex: 1 1 auto; display: flex; flex-direction: column; }
+  .voice > .orb { flex-shrink: 0; margin-top: auto; }
+  .voice > .talk { margin-top: auto; }
 }
 
 /* Laptop dengan layar pendek: padatkan panel kanan supaya tidak perlu scroll */
 @media (min-width: 1025px) and (min-height: 521px) and (max-height: 700px) {
   .top { padding: 4px 24px 2px; } .subtitle { display: none; }
   .side { gap: 6px; }
-  .voice { padding: 8px 12px 10px; }
-  .orb { width: 46px; height: 46px; margin: 10px auto 2px; } .orb svg { width: 24px; height: 24px; }
+  /* kartu suara: orb di kiri, status + petunjuk di kanan (hemat ~50px tinggi) */
+  .voice { padding: 8px 12px 10px; display: grid; grid-template-columns: auto minmax(0, 1fr);
+           column-gap: 14px; align-content: space-between; }
+  .voice > * { grid-column: 1 / -1; }
+  .voice > .orb { grid-column: 1; grid-row: span 2; align-self: center;
+                  width: 46px; height: 46px; margin: 6px 4px 6px 10px; }
+  .orb svg { width: 24px; height: 24px; }
   .orb .ring { inset: -5px; } .orb .ring.r2 { inset: -10px; }
-  .voice-status { margin-top: 6px; font-size: 15px; } .voice-hint { margin-bottom: 6px; }
+  .voice > .voice-status { grid-column: 2; text-align: left; margin-top: 0; font-size: 15px; align-self: end; }
+  .voice > .voice-hint { grid-column: 2; text-align: left; margin: 0; align-self: start; }
+  .voice > .talk { margin-top: 6px; }
+  .voice:has(.handoff:not([hidden])) .voice-hint { display: none; }   /* kotak giliran menggantikan petunjuk */
   .talk { padding: 7px; } .type-row input { padding: 6px 10px; margin-top: 6px; }
   .row-card { padding: 6px 12px; } .field { padding: 4px 10px; min-height: 30px; }
   .actions button { padding: 6px; }
   .bottom { padding: 4px 16px; margin-bottom: 6px; }
+}
+
+/* Laptop dengan layar sangat pendek (mis. scaling 150%): label di samping kolom,
+   dan saat kotak giliran (Mode 2 Pemain) tampil, orb & status disembunyikan — tombol Siap jadi aksi utama */
+@media (min-width: 1025px) and (min-height: 521px) and (max-height: 620px) {
+  .row-card { align-items: center; }
+  .row-body { display: grid; grid-template-columns: 108px minmax(0, 1fr); column-gap: 8px; align-items: center; }
+  .row-body > * { grid-column: 1 / -1; }
+  .row-body > .row-label { grid-column: 1; margin-bottom: 0; white-space: nowrap; }
+  .row-body > .field { grid-column: 2; }
+  .voice:has(.handoff:not([hidden])) :is(.orb, .voice-status) { display: none; }
 }
 
 /* Tablet & laptop kecil: papan di atas, panel suara 2 kolom di bawah */
