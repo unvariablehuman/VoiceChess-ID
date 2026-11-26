@@ -3,6 +3,8 @@
 Main catur dengan perintah suara dalam Bahasa Indonesia. Ucapkan langkah seperti
 "Pion E2 ke E4" atau "Kuda G1 ke F3", lalu bidak berpindah di papan.
 
+**Coba langsung:** https://voicechess-id-web.vercel.app
+
 Alurnya: **mikrofon → Faster-Whisper (ASR) → parser Bahasa Indonesia → papan catur**
 (legalitas langkah dicek dengan `python-chess`). Kalau ucapannya kurang jelas,
 aplikasi menebak langkah terdekat dan meminta konfirmasi ("ya" / "tidak").
@@ -14,9 +16,28 @@ Proyek mata kuliah Speech Recognition.
 - Perintah suara Bahasa Indonesia, termasuk ejaan petak yang diucapkan ("e dua", "ef tiga").
 - Validasi langkah: langkah ilegal ditolak, langkah yang mirip ditawarkan untuk dikonfirmasi.
 - Bisa juga mengetik perintah atau mengklik bidak.
-- Versi desktop (Pygame) dan versi web (HTML/CSS/JS + server ASR lokal).
+- Versi desktop (Pygame) dan versi web (HTML/CSS/JS + server ASR).
 - Versi web: tampilan responsif (laptop, tablet, HP), mode gelap/terang, dan
   Mode 2 Pemain dengan jeda antar giliran.
+
+## Arsitektur versi web
+
+```
+Browser (mikrofon, deteksi awal/akhir bicara, WAV 16 kHz)
+   │  HTTPS
+   ▼
+Halaman web statis ── Vercel (folder web/)
+   │  fetch ke alamat di web/config.js
+   ▼
+Server ASR ── Azure Container Apps (region East Asia)
+   Starlette + Faster-Whisper small (CPU, int8) + parser v2 + python-chess
+```
+
+- Image Docker server dibangun otomatis oleh **GitHub Actions**
+  (`.github/workflows/server-image.yml`) dari `server/Dockerfile` setiap ada perubahan
+  di `app/` atau `server/`, lalu disimpan di `ghcr.io/unvariablehuman/voicechess-asr`.
+- Azure Container Apps menjalankan image itu (2 vCPU, 4 GB RAM, 0–1 replika).
+- Posisi papan disimpan di memori server per tab browser.
 
 ## Struktur folder
 
@@ -28,6 +49,7 @@ Proyek mata kuliah Speech Recognition.
 | `dataset/` | Perekam dataset (`record_dataset.py`) dan daftar perintah (`daftar_perintah.txt`) |
 | `evaluasi/` | Skrip penyatu dataset, evaluasi Whisper (WER, akurasi parser), notebook Colab |
 | `arsip/` | Versi lama (parser v1, notebook parser awal) |
+| `.github/workflows/` | Build otomatis image Docker server ke GitHub Container Registry |
 
 ## Menjalankan
 
@@ -64,26 +86,37 @@ python server/server.py
 python -m http.server 8080 --directory web
 ```
 
-Lalu buka **http://localhost:8080** dan izinkan akses mikrofon. Saat pertama kali
-dijalankan, model Whisper (`small`) diunduh otomatis; tunggu sampai status menunjukkan
-"Server Online".
+Lalu buka **http://localhost:8080/?api=http://localhost:7860** dan izinkan akses
+mikrofon. Tanpa `?api=`, halaman memakai server Azure. Saat pertama kali dijalankan,
+model Whisper (`small`) diunduh otomatis; tunggu sampai status menunjukkan "Server Online".
 
-Alamat server ASR bisa diganti di `web/config.js`. Variabel lingkungan server yang
-tersedia: `WHISPER_MODEL`, `WHISPER_DEVICE`, `WHISPER_COMPUTE`, `ALLOWED_ORIGINS`, `PORT`.
+Variabel lingkungan server yang tersedia: `WHISPER_MODEL`, `WHISPER_DEVICE`,
+`WHISPER_COMPUTE`, `ALLOWED_ORIGINS`, `PORT`.
 
-### Demo online (Vercel + server di laptop)
+## Demo online
 
-Web di https://voicechess-id-web.vercel.app secara default memakai server ASR di Azure Container Apps (region East Asia); cara Cloudflare Tunnel di bawah tetap bisa dipakai lewat `?api=`.
+### Default: server di Azure
 
-Halaman web di Vercel bisa memakai server ASR yang berjalan di laptop, dibuka ke
-internet lewat [Cloudflare Quick Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/)
+Buka https://voicechess-id-web.vercel.app, tekan **Mulai Bermain**, lalu **Mulai Bicara**
+dan izinkan mikrofon. Tidak perlu menyalakan laptop.
+
+- Server tidur kalau beberapa menit tidak dipakai. Pembukaan pertama setelah itu butuh
+  sekitar 30–60 detik (status "Memuat..."), dan posisi papan sebelumnya hilang.
+  Buka halaman 1–2 menit sebelum demo.
+- Mikrofon browser hanya bisa dipakai lewat HTTPS atau localhost.
+
+### Cadangan: server di laptop lewat Cloudflare Tunnel
+
+Kalau server Azure tidak tersedia, halaman di Vercel bisa memakai server ASR di laptop
+yang dibuka ke internet lewat
+[Cloudflare Quick Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/)
 (pasang sekali: `winget install --id Cloudflare.cloudflared`).
 
 1. Nyalakan server ASR: `python server/server.py`
 2. Di terminal lain, buka tunnel: `cloudflared tunnel --url http://localhost:7860`
    lalu salin alamat `https://....trycloudflare.com` dari output-nya.
-3. Buka `https://<web-vercel>/?api=<alamat trycloudflare>`.
-   Alamat itu diingat di browser tersebut; `?api=reset` mengembalikan ke default (localhost).
+3. Buka `https://voicechess-id-web.vercel.app/?api=<alamat trycloudflare>`.
+   Alamat itu diingat di browser tersebut; `?api=reset` mengembalikan ke server Azure.
 
 Catatan:
 
@@ -92,6 +125,17 @@ Catatan:
 - Kalau perintah `cloudflared` belum dikenali setelah instalasi, tutup lalu buka lagi terminalnya.
 - Demi keamanan, `?api=` hanya menerima `localhost` dan alamat `*.trycloudflare.com`.
 
+## Deploy ulang
+
+- **Web:** setiap push ke `main` otomatis di-deploy Vercel (Root Directory = `web`).
+- **Server:** push yang mengubah `app/` atau `server/` memicu GitHub Actions membangun
+  image baru. Setelah build hijau, jalankan di Azure Cloud Shell:
+
+  ```bash
+  az containerapp update -n voicechess-asr -g voicechess-rg \
+    --image ghcr.io/unvariablehuman/voicechess-asr:latest
+  ```
+
 ## Catatan
 
 - **Rekaman suara dan dataset tidak disertakan** di repositori ini karena alasan privasi.
@@ -99,4 +143,5 @@ Catatan:
   tetap ada untuk merekam dan mengevaluasi dataset sendiri.
 - Parser di `app/` adalah versi 2, yaitu versi yang dievaluasi (kamus dibekukan
   18-11-2026; perintah undo dimatikan).
-- File model Whisper tidak disertakan; diunduh otomatis oleh `faster-whisper`.
+- File model Whisper tidak disertakan di repositori; diunduh otomatis oleh `faster-whisper`
+  (di image Docker, model diunduh saat build).
